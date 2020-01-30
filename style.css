@@ -1,0 +1,55 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: o;
+}
+
+
+
+header {
+    padding: 10px;
+    height: 70px;
+    background-color: darkgray;
+}
+
+h1 {
+    text-align: center;
+}
+
+main {
+    margin: 0 auto;
+    
+    height: 85vh;
+    width: 70%;
+    background-color: darkgreen;
+}
+
+#search-box,
+#current-weather,
+#weather-forecast {
+    background: lightgray;
+    border-style: solid;
+}
+
+#search-box {
+    float: left;
+    width: 30%;
+    height: 100%;
+}
+
+#weather-box {
+    display: inline-block;
+    width: 70%;
+    height: 100%;
+}
+
+#current-weather {
+    /* background: blue; */
+    
+    height: 65%;
+}
+
+#weather-forecast {
+    /* background: green; */
+    height: 35%;
+}
