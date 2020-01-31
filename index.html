@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/a7311f41e5.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
     <title>Weather Dashboard</title>
 </head>
@@ -14,18 +15,73 @@
 </header>
 <main>
     <section id="search-box">
-        search
+        <h2>Search for a city</h2>
+        <form id="search-form">
+            <input id="search-input" type="text">
+            <button id="search-button">Go</button>
+        </form>
+        <section id="prev-cities-list">
+            <div class="prev-city">Austin</div>
+            <div class="prev-city">Austin</div>
+            <div class="prev-city">Austin</div>
+            <div class="prev-city">Austin</div>
+            <div class="prev-city">Austin</div>
+            <div class="prev-city">Austin</div>
+            <div class="prev-city">Austin</div>
+            <div class="prev-city">Austin</div>
+        </section>
     </section>
     <section id="weather-box">
-        <article id="current-weather">
-            current
+        <article id="weather-container">
+            <div id="current-weather">
+                <h2 id="city-name">Atlanta (8/15/2019) <img class="icon" src="assets/001-sun.svg"></h2>
+                <p>Temperature: 90F</p>
+                <p>Humidity: 12%</p>
+                <p>Wind Speed: 4.7MPH</p>
+                <p>UV Index: <span id="uv">9.7</span></p>
+                
+            </div>
         </article>
         <article id="weather-forecast">
-            forecast
+            <h2 id="forecast-title">5 Day Forecast</h2>
+            <div id="forecast-list">
+                <div class="forecast-day">
+                    <h3>31/1/2020</h3>
+                    <img class="forecast-icon" src="assets/002-rain.svg">
+                    <p>Temp: 90F</p>
+                    <p>Humidity: 15%</p>
+                </div>
+                <div class="forecast-day">
+                    <h3>1/2/2020</h3>
+                    <img class="forecast-icon" src="assets/002-rain.svg">
+                    <p>Temp: 90F</p>
+                    <p>Humidity: 15%</p>
+                </div>
+                <div class="forecast-day">
+                    <h3>2/2/2020</h3>
+                    <img class="forecast-icon" src="assets/002-rain.svg">
+                    <p>Temp: 90F</p>
+                    <p>Humidity: 15%</p>
+                </div>
+                <div class="forecast-day">
+                    <h3>3/2/2020</h3>
+                    <img class="forecast-icon" src="assets/002-rain.svg">
+                    <p>Temp: 90F</p>
+                    <p>Humidity: 15%</p>
+                </div>
+                <div class="forecast-day">
+                    <h3>4/2/2020</h3>
+                    <img class="forecast-icon" src="assets/002-rain.svg">
+                    <p>Temp: 90F</p>
+                    <p>Humidity: 15%</p>
+                </div>
+            </div>
         </article>
     </section>
 </main>
 
+<footer>
+    <div class="attribution">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"     title="Flaticon">www.flaticon.com</a></div></footer>
 <script src="script.js"></script>
 </body>
 </html>
