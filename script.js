@@ -1,7 +1,7 @@
 
 //Call queries with text stored on each button for previous cities
 let previousCities = [];
-
+getWeather('Atlanta');
 
 function getWeather(location) {
     let units = 'imperial'
@@ -23,7 +23,7 @@ function getWeather(location) {
 
         let latitude = response.coord.lat;
         let longitude = response.coord.lon;
-        console.log(latitude  + " " + longitude);
+        //console.log(latitude  + " " + longitude);
         let uvQuery = "http://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=166a433c57516f51dfab1f7edaed8413";
         $.ajax({
             url: uvQuery,
@@ -35,14 +35,15 @@ function getWeather(location) {
     });
 
     //One to forecast
-    let forecastQuery = 'https://api.openweathermap.org/data/2.5/forecast?q=' + location + '&mode=json&appid=bf5febefea936c9144ec3f7829565d5f';
+    let forecastQuery = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + location + '&mode=json&units=imperial&cnt=6&appid=166a433c57516f51dfab1f7edaed8413';
 
     $.ajax({
         url: forecastQuery,
         method: "GET"
     }).then(function(response) {
     
-          
+          //console.log(response);
+            updateForecast(response);
         
     });
 }
@@ -52,7 +53,7 @@ function getWeather(location) {
 $('#prev-cities-list').on("click", function(event) {
     if(event.target.matches('button')) {
         let city = event.target.textContent;
-        console.log(event.target.textContent);
+        //console.log(event.target.textContent);
 
         getWeather(city);
     }
@@ -70,7 +71,40 @@ $('#search-form').on("submit", function(event) {
 
 //"166a433c57516f51dfab1f7edaed8413";
 
+function updateForecast(Obj) {
+    $('#forecast-list').html("");
+    let date;
+    let icon;
+    let temp;
+    let humidity;
+    for (let i=1; i < 6; i++) {
+        
+        date = formatDate(new Date(Obj.list[i].dt*1000));
+        icon = displayIcon(Obj.list[i].weather[0].main, 'forecast');
+        temp = Obj.list[i].temp.max;
+        humidity = Obj.list[i].humidity;
+        
+        let currentDay = $('<div>');
+        currentDay.addClass('forecast-day');
+        currentDay.append($(`<h3>${date}</h3>`));
+        currentDay.append(icon);
+        currentDay.append($(`
+            <p>Temp: ${temp}&degF</p>
+            <p>Humidity: ${humidity}%</p>
+        `));
+        
+        $('#forecast-list').append(currentDay);
+        
+    }
+    
 
+    //<div class="forecast-day">
+    //<h3>31/1/2020</h3>
+    //<img class="forecast-icon" src="assets/002-rain.svg">
+    //<p>Temp: 90F</p>
+    //<p>Humidity: 15%</p>
+    //</div>
+}
 
 
 function updateButtons(Arr, Obj) {
@@ -96,7 +130,7 @@ function updateCurrentWeather(Obj) {
     $('#current-weather').empty();
     
     let current = $(
-        `<h2 id="city-name">${Obj.name} ${getCurrentDate()}   </h2>
+        `<h2 id="city-name">${Obj.name} ${formatDate(new Date())}   </h2>
         <p>Temperature: ${Obj.main.temp}&degF</p>
         <p>Humidity: ${Obj.main.humidity}%</p>
         <p>Wind Speed: ${Obj.wind.speed} MPH</p>`
@@ -156,14 +190,15 @@ function displayIcon(condition, type='icon') {
     return icon;
 }
 
-function getCurrentDate() {
-    let date = new Date();
+function formatDate(date) {
+    let year;
     let today = "(";
     today += parseInt(date.getMonth()) + 1;
     today += "/";
     today += date.getDate();
     today += "/";
-    today += date.getFullYear();
+    year = date.getFullYear();
+    today += year.toString().substr(2);
     today += ")";
     return today;
 }
