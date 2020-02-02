@@ -18,27 +18,22 @@
         <h2>Search for a city</h2>
         <form id="search-form">
             <input id="search-input" type="text">
-            <button id="search-button">Go</button>
+            <input type="submit" id="search-button" value="Go"></input>
         </form>
-        <section id="prev-cities-list">
-            <div class="prev-city">Austin</div>
-            <div class="prev-city">Austin</div>
-            <div class="prev-city">Austin</div>
-            <div class="prev-city">Austin</div>
-            <div class="prev-city">Austin</div>
-            <div class="prev-city">Austin</div>
-            <div class="prev-city">Austin</div>
-            <div class="prev-city">Austin</div>
-        </section>
+        <div id="prev-cities">
+            <p>Recent Searches</p>
+            <hr>
+            <section id="prev-cities-list"></section>
+        </div>
     </section>
     <section id="weather-box">
         <article id="weather-container">
             <div id="current-weather">
-                <h2 id="city-name">Atlanta (8/15/2019) <img class="icon" src="assets/001-sun.svg"></h2>
+                <h2 id="city-name">Atlanta (2/2/2020) <img class="icon" src="assets/001-sun.svg"></h2>
                 <p>Temperature: 90F</p>
                 <p>Humidity: 12%</p>
                 <p>Wind Speed: 4.7MPH</p>
-                <p>UV Index: <span id="uv">9.7</span></p>
+                <p>UV Index: <span id="uv" style="background: #00d800">0.3</span></p>
                 
             </div>
         </article>
@@ -46,10 +41,10 @@
             <h2 id="forecast-title">5 Day Forecast</h2>
             <div id="forecast-list">
                 <div class="forecast-day">
-                    <h3>31/1/2020</h3>
-                    <img class="forecast-icon" src="assets/002-rain.svg">
-                    <p>Temp: 90F</p>
-                    <p>Humidity: 15%</p>
+                        <h3>31/1/2020</h3>
+                        <img class="forecast-icon" src="assets/002-rain.svg">
+                        <p>Temp: 90F</p>
+                        <p>Humidity: 15%</p>
                 </div>
                 <div class="forecast-day">
                     <h3>1/2/2020</h3>

@@ -1,11 +1,10 @@
 
 //Call queries with text stored on each button for previous cities
+let previousCities = [];
 
-$('#search-form').on("submit", function(event) {
-    event.preventDefault();
-    let location = $('#search-input').val().trim();
+
+function getWeather(location) {
     let units = 'imperial'
-
     //make three requests
     //One to current Weather
     let currentQuery = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&units=" + units + "&appid=bf5febefea936c9144ec3f7829565d5f";
@@ -14,15 +13,17 @@ $('#search-form').on("submit", function(event) {
     $.ajax({
         url: currentQuery,
         method: "GET"
-    }).then(function(response) {
+    }).then(function(response) {        
 
+        //Updates Previous City List
+        updateButtons(previousCities, response);
+
+        //Displays the current weather
         updateCurrentWeather(response);
 
         let latitude = response.coord.lat;
         let longitude = response.coord.lon;
-
-        console.log(latitude + " " + longitude);
-
+        console.log(latitude  + " " + longitude);
         let uvQuery = "http://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=166a433c57516f51dfab1f7edaed8413";
         $.ajax({
             url: uvQuery,
@@ -31,7 +32,6 @@ $('#search-form').on("submit", function(event) {
             updateUV(response);
         })
 
-        console.log(response);
     });
 
     //One to forecast
@@ -40,24 +40,61 @@ $('#search-form').on("submit", function(event) {
     $.ajax({
         url: forecastQuery,
         method: "GET"
-      }).then(function(response) {
+    }).then(function(response) {
     
           
         
-      });
+    });
+}
 
-    //One for UV Index
-    let uvQuery = "http://api.openweathermap.org/data/2.5/uvi?lat=37.75&lon=-122.37&appid=166a433c57516f51dfab1f7edaed8413"
+
+
+$('#prev-cities-list').on("click", function(event) {
+    if(event.target.matches('button')) {
+        let city = event.target.textContent;
+        console.log(event.target.textContent);
+
+        getWeather(city);
+    }
+})
+
+$('#search-form').on("submit", function(event) {
+    event.preventDefault();
+
+    let location = $('#search-input').val().trim();
+
+    getWeather(location);
+    $('#search-input').val("");
 
 })
 
 //"166a433c57516f51dfab1f7edaed8413";
 
 
+
+
+function updateButtons(Arr, Obj) {
+
+    if (!Arr.includes(Obj.name)) {
+        Arr.push(Obj.name);
+        $('#prev-cities-list').html("");
+
+        if (Arr.length > 8) {
+            Arr.shift();
+        }
+
+        for (let i = 0; i < Arr.length; i++) {
+            let currentButton = $(`<button class="prev-city">${Arr[i]}</button>`);
+            $('#prev-cities-list').prepend(currentButton);
+        }
+    }
+    //<button class="prev-city">Austin</button>
+}
+
 //Takes in response from current weather query and appends information to the current weather div
 function updateCurrentWeather(Obj) {
     $('#current-weather').empty();
-    console.log("Hello");
+    
     let current = $(
         `<h2 id="city-name">${Obj.name} ${getCurrentDate()}   </h2>
         <p>Temperature: ${Obj.main.temp}&degF</p>
@@ -130,82 +167,3 @@ function getCurrentDate() {
     today += ")";
     return today;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// let city = 'Los+Angeles';
-// //bf5febefea936c9144ec3f7829565d5f
-
-// let queryURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&mode=json&appid=bf5febefea936c9144ec3f7829565d5f'
-
-// $.ajax({
-//     url: queryURL,
-//     method: "GET"
-//   }).then(function(response) {
-//       city = response;
-//       console.log(cityDetails(city, 30));
-    
-//   });
-
-//   function cityDetails(city, index) {
-//       let info = "";
-      
-//       info += city.city.name;
-//       info += " ";
-//       info += formatDate(city.list[index].dt_txt);
-//       return info;
-//   }
-
-//   function formatDate(date) {
-//       let formatted = date.substr(0,date.indexOf(" "));
-//       formatted = formatted.split('-');
-
-//       for (let i = 0; i < formatted.length; i++) {
-//         if (formatted[i][0] === '0') {
-//             formatted[i] = formatted[i][1];
-//         }
-//       }
-
-//       formatted = `(${formatted[2]}/${formatted[1]}/${formatted[0]})` 
-//       return formatted;
-//   }
-
-
-
-
