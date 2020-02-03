@@ -24,7 +24,7 @@ function getWeather(location) {
         let latitude = response.coord.lat;
         let longitude = response.coord.lon;
         //console.log(latitude  + " " + longitude);
-        let uvQuery = "http://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=166a433c57516f51dfab1f7edaed8413";
+        let uvQuery = "https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=166a433c57516f51dfab1f7edaed8413";
         $.ajax({
             url: uvQuery,
             method: "GET"
@@ -35,7 +35,7 @@ function getWeather(location) {
     });
 
     //One to forecast
-    let forecastQuery = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + location + '&mode=json&units=imperial&cnt=6&appid=166a433c57516f51dfab1f7edaed8413';
+    let forecastQuery = 'https://api.openweathermap.org/data/2.5/forecast/daily?q=' + location + '&mode=json&units=imperial&cnt=6&appid=166a433c57516f51dfab1f7edaed8413';
 
     $.ajax({
         url: forecastQuery,
