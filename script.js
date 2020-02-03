@@ -5,7 +5,7 @@ getWeather('Turlock');
 
 function getWeather(location) {
     let units = 'imperial'
-    //make three requests
+    //makes  three requests
     //One to current Weather
     let currentQuery = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&units=" + units + "&appid=bf5febefea936c9144ec3f7829565d5f";
     
