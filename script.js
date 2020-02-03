@@ -1,7 +1,7 @@
 
 //Call queries with text stored on each button for previous cities
 let previousCities = [];
-getWeather('Atlanta');
+getWeather('Turlock');
 
 function getWeather(location) {
     let units = 'imperial'
