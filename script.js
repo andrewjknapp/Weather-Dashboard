@@ -20,15 +20,11 @@ function getWeather(location) {
         url: currentQuery,
         method: "GET"
     }).then(function(response) {        
-        
-
-        
-        
 
         //Updates Previous City List
         updateButtons(previousCities, response);
         localStorage.setItem('prevCities', JSON.stringify(previousCities));
-
+        console.log(response);
         //Displays the current weather
         updateCurrentWeather(response);
 
@@ -62,11 +58,23 @@ function getWeather(location) {
 
 
 $('#prev-cities-list').on("click", function(event) {
+    
     if(event.target.matches('button')) {
-        let city = event.target.textContent;
+        //this accounts for the times symbol as the last character in the button
+        let city = event.target.textContent.substr(0, event.target.textContent.length - 1);
         
-
         getWeather(city);
+    } else if(event.target.matches('span')) {
+        let city = event.target.parentElement.textContent.substr(0, event.target.parentElement.textContent.length - 1);
+        
+        previousCities = removeCity(previousCities, city);
+       
+        
+        if (previousCities.length < 1) {
+            $('#prev-cities-list').html("");
+        } else {
+            getWeather(previousCities[0]);
+        }
     }
 })
 
@@ -91,6 +99,7 @@ function updateForecast(Obj) {
     for (let i=1; i < 6; i++) {
         
         date = formatDate(new Date(Obj.list[i].dt*1000));
+        date = date.substr(1,date.length-2);
         icon = displayIcon(Obj.list[i].weather[0].main, 'forecast');
         temp = Obj.list[i].temp.max;
         humidity = Obj.list[i].humidity;
@@ -108,37 +117,26 @@ function updateForecast(Obj) {
         
     }
     
-
-    //<div class="forecast-day">
-    //<h3>31/1/2020</h3>
-    //<img class="forecast-icon" src="assets/002-rain.svg">
-    //<p>Temp: 90F</p>
-    //<p>Humidity: 15%</p>
-    //</div>
 }
 
 
 function updateButtons(Arr, Obj) {
     
+    Arr.push(Obj.name);
+    $('#prev-cities-list').html("");
     
-        
-        Arr.push(Obj.name);
-        $('#prev-cities-list').html("");
-
-        
-        Arr = removeDuplicates(Arr);
-        
-
-        if (Arr.length > 8) {
-            Arr.shift();
-        }
-
-        for (let i = 0; i < Arr.length; i++) {
-            let currentButton = $(`<button class="prev-city">${Arr[i]}</button>`);
-            $('#prev-cities-list').prepend(currentButton);
-        }
+    Arr = removeDuplicates(Arr);
+    previousCities = Arr;
     
-    //<button class="prev-city">Austin</button>
+    
+    if (Arr.length > 8) {
+        Arr.shift();
+    }
+    for (let i = 0; i < Arr.length; i++) {
+        let currentButton = $(`<button class="prev-city">${Arr[i]}<span class="exit">&times;</span></button>`);
+        $('#prev-cities-list').prepend(currentButton);
+    }
+    //<span class="exit">&times;</span>
 }
 
 //Takes in response from current weather query and appends information to the current weather div
@@ -146,7 +144,7 @@ function updateCurrentWeather(Obj) {
     $('#current-weather').empty();
     
     let current = $(
-        `<h2 id="city-name">${Obj.name} ${formatDate(new Date())}   </h2>
+        `<h2 id="city-name">${Obj.name}, ${Obj.sys.country} ${formatDate(new Date())}   </h2>
         <p>Temperature: ${Obj.main.temp}&degF</p>
         <p>Humidity: ${Obj.main.humidity}%</p>
         <p>Wind Speed: ${Obj.wind.speed} MPH</p>`
@@ -221,4 +219,16 @@ function formatDate(date) {
 
 function removeDuplicates(Arr) {
     return [...new Set(Arr)];
+}
+
+function removeCity(Arr, city) {
+    let retArr = [];
+    for (let i = 0; i < Arr.length; i++) {
+        
+        if(!retArr.includes(city) && Arr[i] !== city) {
+            
+            retArr.push(Arr[i]);
+        }
+    }
+    return retArr;
 }

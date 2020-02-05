@@ -87,6 +87,15 @@ hr {
     background-color: gray;
 }
 
+.exit {
+    float: right;
+    /* font-size: large; */
+}
+
+.exit:hover {
+    font-size: x-large;
+}
+
 #weather-box {
     float: left;
     width: 70%;
@@ -214,11 +223,16 @@ footer {
     #prev-cities {
         display: none;
     }
+
+    .forecast-day {
+        width: 19%;
+    }
+
     .forecast-day h3 {
         font-size: 0.8em;
     }
     .forecast-day p {
         font-size: 0.6em;
     }
-    
+   
 }
