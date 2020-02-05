@@ -1,7 +1,13 @@
 
 //Call queries with text stored on each button for previous cities
 let previousCities = [];
-getWeather('Turlock');
+
+if (localStorage.getItem('prevCities') !== null) {
+    previousCities = JSON.parse(localStorage.getItem('prevCities'));
+    getWeather(previousCities[previousCities.length-1]);
+} else {
+    getWeather('Turlock');
+}
 
 function getWeather(location) {
     let units = 'imperial'
@@ -14,16 +20,21 @@ function getWeather(location) {
         url: currentQuery,
         method: "GET"
     }).then(function(response) {        
+        
+
+        
+        
 
         //Updates Previous City List
         updateButtons(previousCities, response);
+        localStorage.setItem('prevCities', JSON.stringify(previousCities));
 
         //Displays the current weather
         updateCurrentWeather(response);
 
         let latitude = response.coord.lat;
         let longitude = response.coord.lon;
-        //console.log(latitude  + " " + longitude);
+        
         let uvQuery = "https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=166a433c57516f51dfab1f7edaed8413";
         $.ajax({
             url: uvQuery,
@@ -42,7 +53,7 @@ function getWeather(location) {
         method: "GET"
     }).then(function(response) {
     
-          //console.log(response);
+          
             updateForecast(response);
         
     });
@@ -53,7 +64,7 @@ function getWeather(location) {
 $('#prev-cities-list').on("click", function(event) {
     if(event.target.matches('button')) {
         let city = event.target.textContent;
-        //console.log(event.target.textContent);
+        
 
         getWeather(city);
     }
@@ -108,10 +119,15 @@ function updateForecast(Obj) {
 
 
 function updateButtons(Arr, Obj) {
-
-    if (!Arr.includes(Obj.name)) {
+    
+    
+        
         Arr.push(Obj.name);
         $('#prev-cities-list').html("");
+
+        
+        Arr = removeDuplicates(Arr);
+        
 
         if (Arr.length > 8) {
             Arr.shift();
@@ -121,7 +137,7 @@ function updateButtons(Arr, Obj) {
             let currentButton = $(`<button class="prev-city">${Arr[i]}</button>`);
             $('#prev-cities-list').prepend(currentButton);
         }
-    }
+    
     //<button class="prev-city">Austin</button>
 }
 
@@ -201,4 +217,8 @@ function formatDate(date) {
     today += year.toString().substr(2);
     today += ")";
     return today;
+}
+
+function removeDuplicates(Arr) {
+    return [...new Set(Arr)];
 }
