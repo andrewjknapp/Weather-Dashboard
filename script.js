@@ -2,6 +2,8 @@
 //Call queries with text stored on each button for previous cities
 let previousCities = [];
 
+//If there is data in the local storage the previousCities is set equal to that storage, if not
+//the page will default to search for weather in Turlock, Ca
 if (localStorage.getItem('prevCities') !== null) {
     previousCities = JSON.parse(localStorage.getItem('prevCities'));
     getWeather(previousCities[previousCities.length-1]);
@@ -9,6 +11,9 @@ if (localStorage.getItem('prevCities') !== null) {
     getWeather('Turlock');
 }
 
+//This is the main function that makes the requests for the current weather, forecast, and uv index
+//This also calls the update buttons function to set the previous cities buttons.
+//After each request the sections are loaded with update functions.
 function getWeather(location) {
     let units = 'imperial'
     //makes  three requests
@@ -23,8 +28,9 @@ function getWeather(location) {
 
         //Updates Previous City List
         updateButtons(previousCities, response);
+        //Adds the current preciousCities array to local storage
         localStorage.setItem('prevCities', JSON.stringify(previousCities));
-        console.log(response);
+        
         //Displays the current weather
         updateCurrentWeather(response);
 
@@ -56,7 +62,8 @@ function getWeather(location) {
 }
 
 
-
+//This handles the calling of previous cities to be searched as well as
+//the removing of previous cities
 $('#prev-cities-list').on("click", function(event) {
     
     if(event.target.matches('button')) {
@@ -78,6 +85,8 @@ $('#prev-cities-list').on("click", function(event) {
     }
 })
 
+//Calls the getWeather function which updates the page with the user inputted location and 
+//clears the user input field
 $('#search-form').on("submit", function(event) {
     event.preventDefault();
 
@@ -88,8 +97,7 @@ $('#search-form').on("submit", function(event) {
 
 })
 
-//"166a433c57516f51dfab1f7edaed8413";
-
+//Formats and displays the 5 day forecast
 function updateForecast(Obj) {
     $('#forecast-list').html("");
     let date;
@@ -119,7 +127,7 @@ function updateForecast(Obj) {
     
 }
 
-
+//Displays the previous cities buttons based on the contents of the previous Cities array
 function updateButtons(Arr, Obj) {
     
     Arr.push(Obj.name);
@@ -136,7 +144,6 @@ function updateButtons(Arr, Obj) {
         let currentButton = $(`<button class="prev-city">${Arr[i]}<span class="exit">&times;</span></button>`);
         $('#prev-cities-list').prepend(currentButton);
     }
-    //<span class="exit">&times;</span>
 }
 
 //Takes in response from current weather query and appends information to the current weather div
@@ -204,6 +211,7 @@ function displayIcon(condition, type='icon') {
     return icon;
 }
 
+//Takes in the date and formats it as (dd/mm/yyyy)
 function formatDate(date) {
     let year;
     let today = "(";
@@ -217,10 +225,12 @@ function formatDate(date) {
     return today;
 }
 
+//removes duplicates from an array
 function removeDuplicates(Arr) {
     return [...new Set(Arr)];
 }
 
+//removes a specified value from an array
 function removeCity(Arr, city) {
     let retArr = [];
     for (let i = 0; i < Arr.length; i++) {
