@@ -1,6 +1,6 @@
 # Weather-Dashboard
 
-> - Created by: `Andrew Knapp - andrewjknapp`
+> Created by: Andrew Knapp - [andrewjknapp](https://github.com/andrewjknapp)
 
 ## Link to Live Project
 
